@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
     var link = '';
+    var adresa = "https://react-wk9gvk.stackblitz.io/game" + link;
+    console.log({adresa});
   }
   genereaza(length) {
     this.link = '';
@@ -12,7 +14,9 @@ export default class Homepage extends React.Component {
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for (var i = 1; i <= length; i++) {
-      this.link += characters.charAt(Math.floor(Math.random() * charactersLength));
+      this.link += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
     }
   }
   render() {
@@ -26,9 +30,14 @@ export default class Homepage extends React.Component {
         />
         {this.link}
         <br />
-        <Link to="/">Enter session</Link>
+        <Link
+          to={{
+          pathname: "/game",
+          search: this.link,
+          state: { fromDashboard: true }
+          }}
+        >Enter Session</Link>
       </div>
     );
   }
 }
-export default {link}
