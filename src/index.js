@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import Homepage from './Homepage';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
+import { link } from './Homepage';
 ReactDOM.render(
   <React.StrictMode>
     <Router>
