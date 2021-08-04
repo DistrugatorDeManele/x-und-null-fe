@@ -1,7 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-export default function Homepage() {
-  var link;
+export default class Homepage extends React.Component() {
+  constructor(props){
+    super(props);
+    var link = '';
+  }
+  genereaza(length) {
+    link = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 1; i <= length; i++) {
+      link += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+  }
   return (
     <nav>
       <div>
@@ -17,13 +28,4 @@ export default function Homepage() {
       </div>
     </nav>
   );
-  function genereaza(length) {
-    link = '';
-    var characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 1; i <= length; i++) {
-      link += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-  }
 }
