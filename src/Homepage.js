@@ -1,43 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import ReactDOM from 'react-dom'
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
-    var link = '';
-    var adresa = "https://react-wk9gvk.stackblitz.io/game" + link;
-    console.log({adresa});
+    this.state = {
+      link: ''
+    }
   }
-  genereaza(length) {
-    this.link = '';
+  genereaza(){
+    var link1 = '';
     var characters =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
-    for (var i = 1; i <= length; i++) {
-      this.link += characters.charAt(
+    for (var i = 1; i <= 10; i++) {
+      link1 += characters.charAt(
         Math.floor(Math.random() * charactersLength)
       );
     }
+    this.setState({link : link1})
   }
   render() {
     return (
       <div>
-        <input
-          id="buton"
-          type="button"
-          value="Invite Link"
-          onClick={this.genereaza(10)}
-        />
-        {this.link}
+        <p> {this.state.link} </p>
+        <button onClick = {this.genereaza}>Change Invite Link</button>
         <br />
         <Link
           to={{
           pathname: "/game",
-          search: this.link,
+          search: this.state.link,
           state: { fromDashboard: true }
           }}
         >Enter Session</Link>
       </div>
     );
   }
+
 }
