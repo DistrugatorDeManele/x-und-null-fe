@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 const io = require('socket.io-client');
 const socket = io('http://localhost:3000/');
 socket.on('chat message', function(msg) {
-  console.log('msg');
+  console.log(msg);
 });
 export default class Homepage extends React.Component {
   constructor(props) {
