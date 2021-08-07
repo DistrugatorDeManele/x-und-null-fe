@@ -4,9 +4,6 @@ import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
 const io = require('socket.io-client');
 const socket = io('http://localhost:3000/');
-socket.on('chat message', function(msg) {
-  ReactDOM.render(<Homepage/>,document.getElementById('root'));
-});
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +11,9 @@ export default class Homepage extends React.Component {
       link: ''
     };
     this.genereaza = this.genereaza.bind(this);
+    socket.on('chat message', function(msg) {
+      this.setState({ link: link1 });
+    });
   }
   genereaza() {
     var link1 = '';
