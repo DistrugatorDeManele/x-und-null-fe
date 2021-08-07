@@ -11,9 +11,6 @@ export default class Homepage extends React.Component {
       link: ''
     };
     this.genereaza = this.genereaza.bind(this);
-    socket.on('chat message', function(msg) {
-      this.setState({ link: link1 });
-    });
   }
   genereaza() {
     var link1 = '';
@@ -24,6 +21,9 @@ export default class Homepage extends React.Component {
       link1 += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     this.setState({ link: link1 });
+    socket.on('chat message', function(msg) {
+      this.setState({ link: msg });
+    });
     socket.emit('chat message', link1);
   }
   render() {
