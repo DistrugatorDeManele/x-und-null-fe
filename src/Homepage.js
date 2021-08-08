@@ -6,9 +6,11 @@ export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      link: this.genereaza()
+      link: this.genereaza(),
+      join: ''
     };
     this.genereaza = this.genereaza.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   genereaza() {
@@ -22,6 +24,9 @@ export default class Homepage extends React.Component {
     this.setState({ link: link1 });
     return link1;
   }
+  handleChange(event) {
+    this.setState({ join: event.target.value });
+  }
   render() {
     return (
       <div>
@@ -30,13 +35,34 @@ export default class Homepage extends React.Component {
         <br />
         <Link
           to={{
-            pathname: '/game',
+            pathname: '/loading',
             search: this.state.link,
             state: { fromDashboard: true }
           }}
         >
           Enter Session
         </Link>
+        <form>
+          <label>
+            Your invite link
+            <br />
+            <input
+              type="text"
+              name="name"
+              value={this.state.join}
+              onChange={this.handleChange}
+            />
+          </label>
+          <Link
+            to={{
+              pathname: '/loading',
+              search: this.state.join,
+              state: { fromDashboard: true }
+            }}
+          >
+            Enter Session
+          </Link>
+        </form>
       </div>
     );
   }
