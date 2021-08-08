@@ -12,7 +12,6 @@ export default class Homepage extends React.Component {
     this.genereaza = this.genereaza.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-
   genereaza() {
     var link1 = '';
     var characters =
