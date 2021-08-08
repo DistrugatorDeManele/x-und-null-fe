@@ -6,10 +6,9 @@ export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      link: ''
+      link: this.genereaza()
     };
     this.genereaza = this.genereaza.bind(this);
-    this.genereaza();
   }
 
   genereaza() {
@@ -21,6 +20,7 @@ export default class Homepage extends React.Component {
       link1 += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     this.setState({ link: link1 });
+    return link1;
   }
   render() {
     return (
