@@ -2,13 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
-const io = require('socket.io-client');
-const socket = io('http://localhost:3000/');
+
 export default class Join extends React.Component {
   constructor(props) {
     super(props);
-    socket.emit('invite', window.location.search.substring(1));
-    socket.on('invite', function(inv) {
+    this.socket = this.props.socket;
+    this.socket.on('invite', function(inv) {
       ReactDOM.render(
         <Link
           to={{
@@ -27,4 +26,3 @@ export default class Join extends React.Component {
     return <h1> Loading... {window.location.search.substring(1)}</h1>;
   }
 }
-

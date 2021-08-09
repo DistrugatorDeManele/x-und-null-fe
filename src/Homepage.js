@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
+
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
+    this.socket = this.props.socket;
     this.state = {
       link: this.genereaza(),
       join: ''
     };
     this.genereaza = this.genereaza.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.sendToServer = this.sendToServer.bind(this);
   }
   genereaza() {
     var link1 = '';
@@ -21,10 +24,14 @@ export default class Homepage extends React.Component {
       link1 += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     this.setState({ link: link1 });
+    //this.socket.emit('invite', window.location.search.substring(1));
     return link1;
   }
   handleChange(event) {
     this.setState({ join: event.target.value });
+  }
+  sendToServer() {
+    this.socket.emit('invite', window.location.search.substring(1));
   }
   render() {
     return (
@@ -38,6 +45,7 @@ export default class Homepage extends React.Component {
             search: this.state.link,
             state: { fromDashboard: true }
           }}
+          onClick={this.sendToServer}
         >
           Enter Session
         </Link>
@@ -58,6 +66,7 @@ export default class Homepage extends React.Component {
               search: this.state.join,
               state: { fromDashboard: true }
             }}
+            onClick={this.sendToServer}
           >
             Enter Session
           </Link>
