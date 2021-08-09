@@ -6,23 +6,38 @@ import { Helmet } from 'react-helmet';
 export default class Join extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true
+    };
     this.socket = this.props.socket;
-    this.socket.on('invite', function(inv) {
-      ReactDOM.render(
-        <Link
-          to={{
-            pathname: '/game',
-            search: inv,
-            state: { fromDashboard: true }
-          }}
-        >
-          Enter Session
-        </Link>
-      );
-      console.log('da');
-    });
+  }
+  componentDidMount() {
+    this.socket.on(
+      'invite',
+      function(inv) {
+        this.setState({ loading: false });
+        console.log('merge');
+      }.bind(this)
+    );
   }
   render() {
-    return <h1> Loading... {window.location.search.substring(1)}</h1>;
+    return (
+      <div>
+        {this.state.loading && (
+          <h1> Loading... {window.location.search.substring(1)}</h1>
+        )}
+        {!this.state.loading && (
+          <Link
+            to={{
+              pathname: '/game',
+              search: window.location.search.substring(1),
+              state: { fromDashboard: true }
+            }}
+          >
+            Enter Session
+          </Link>
+        )}
+      </div>
+    );
   }
 }
