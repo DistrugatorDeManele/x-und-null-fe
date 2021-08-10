@@ -77,13 +77,13 @@ class Board extends React.Component {
           this.socket.on(
             'user',
             function(nr) {
-              this.setState({ nextX: nr });
+              this.setState({ nextX: false });
             }.bind(this)
           );
         }
         status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
-        }
       }
+    }
 
     return (
       <div>
