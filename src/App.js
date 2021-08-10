@@ -5,6 +5,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.socket = this.props.socket;
+    this.socket.emit('user', window.location.search.substring(1));
   }
   render() {
     return (
@@ -73,7 +74,7 @@ class Board extends React.Component {
         status = 'Draw';
       } else {
         if (empty(squares) == 1) {
-          this.socket.emit('user', window.location.search.substring(1));
+          //this.socket.emit('user', window.location.search.substring(1));
         }
         status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
       }
