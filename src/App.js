@@ -35,6 +35,7 @@ class Board extends React.Component {
       squares: Array(9).fill(null),
       nextX: true
     };
+    var aflam = true;
   }
   handleClick(i) {
     const squares = this.state.squares.slice();
@@ -78,10 +79,13 @@ class Board extends React.Component {
             'user',
             function(nr) {
               this.setState({ nextX: nr });
+              console.log(nr);
+              this.aflam = false;
             }.bind(this)
           );
         }
-        status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
+        if (this.aflam == false)
+          status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
       }
     }
 
