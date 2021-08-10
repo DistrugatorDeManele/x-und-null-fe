@@ -16,7 +16,6 @@ export default class Join extends React.Component {
       'invite',
       function(inv) {
         this.setState({ loading: false });
-        console.log('merge');
       }.bind(this)
     );
   }

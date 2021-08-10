@@ -1,12 +1,18 @@
 import React from 'react';
 import './style.css';
-
-export default function App() {
-  return (
-    <div>
-      <Game />
-    </div>
-  );
+import ReactDOM from 'react-dom';
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.socket = this.props.socket;
+  }
+  render() {
+    return (
+      <div>
+        <Game socket={this.socket} />
+      </div>
+    );
+  }
 }
 
 class Square extends React.Component {
@@ -24,6 +30,7 @@ class Square extends React.Component {
 class Board extends React.Component {
   constructor(props) {
     super(props);
+    this.socket = this.props.socket;
     this.state = {
       squares: Array(9).fill(null),
       nextX: true
@@ -65,6 +72,9 @@ class Board extends React.Component {
       if (fill(squares) == 1) {
         status = 'Draw';
       } else {
+        if (empty(squares) == 1) {
+          this.socket.emit('user', window.location.search.substring(1));
+        }
         status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
       }
     }
@@ -93,11 +103,15 @@ class Board extends React.Component {
   }
 }
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.socket = this.props.socket;
+  }
   render() {
     return (
       <div className="game">
         <div className="game-board">
-          <Board />
+          <Board socket={this.socket} />
         </div>
       </div>
     );
@@ -106,6 +120,12 @@ class Game extends React.Component {
 function fill(squares) {
   for (let i = 0; i < squares.length; i++) {
     if (squares[i] == null) return 0;
+  }
+  return 1;
+}
+function empty(squares) {
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i] != null) return 0;
   }
   return 1;
 }

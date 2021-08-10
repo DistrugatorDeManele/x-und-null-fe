@@ -15,7 +15,7 @@ ReactDOM.render(
           <Join socket={socket} />
         </Route>
         <Route path="/game">
-          <App />
+          <App socket={socket}/>
         </Route>
         <Route path="/">
           <Homepage socket={socket} />
