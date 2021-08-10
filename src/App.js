@@ -81,7 +81,7 @@ class Board extends React.Component {
             }.bind(this)
           );
         }
-        status = 'Next player: ' + this.state.nextX;
+        status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
       }
     }
 
