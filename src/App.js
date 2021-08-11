@@ -83,9 +83,10 @@ class Board extends React.Component {
               this.aflam = false;
             }.bind(this)
           );
-        }
-        if (this.aflam == false)
           status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
+        } else {
+          status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
+        }
       }
     }
 
