@@ -32,21 +32,32 @@ class Board extends React.Component {
     super(props);
     this.socket = this.props.socket;
     this.state = {
-      squares: Array(9).fill(null),
-      nextX: true
+      squares: Array(9).fill(null)
     };
     var aflam = true;
+    this.socket.emit('user', window.location.search.substring(1));
+    this.socket.on(
+      'user',
+      function(nr) {
+        if (nr == true) {
+          this.WhoAmI = 'X';
+        } else {
+          this.WhoAmI = 'O';
+        }
+        this.aflam = false;
+      }.bind(this)
+    );
+    this.socket.on('table', function(tabla) {
+      this.setState({ squares: tabla });
+    });
   }
   handleClick(i) {
+    //daca nu s eu dau return(if)
     const squares = this.state.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.nextX ? 'X' : 'O';
-    this.setState({
-      squares: squares,
-      nextX: !this.state.nextX
+    squares[i] = this.setState({ //pui in patratel cine esti
+      squares: squares
     });
+    //se da emit la tabla cu x si 0
   }
   renderSquare(i) {
     return (
@@ -56,43 +67,11 @@ class Board extends React.Component {
       />
     );
   }
-  Restart() {
-    for (let i = 0; i < this.state.squares.length; i++) {
-      var newSquares = new Array(this.state.squares.length);
-      this.setState({ squares: newSquares });
-    }
-  }
 
   render() {
-    const winner = calculateWinner(this.state.squares);
-    const squares = this.state.squares.slice();
-    let status;
-    if (winner) {
-      status = 'Winner: ' + winner;
-    } else {
-      if (fill(squares) == 1) {
-        status = 'Draw';
-      } else {
-        if (empty(squares) == 1) {
-          this.socket.emit('user', window.location.search.substring(1));
-          this.socket.on(
-            'user',
-            function(nr) {
-              this.setState({ nextX: nr });
-              console.log(nr);
-              this.aflam = false;
-            }.bind(this)
-          );
-          status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
-        } else {
-          status = 'Next player: ' + (this.state.nextX ? 'X' : 'O');
-        }
-      }
-    }
-
     return (
       <div>
-        <div className="status">{status}</div>
+        <div className="status">Urmeaza sa mute {currentPlayer}</div>
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -108,7 +87,6 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
-        <button onClick={() => this.Restart()}> Restart </button>
       </div>
     );
   }
@@ -127,35 +105,4 @@ class Game extends React.Component {
       </div>
     );
   }
-}
-function fill(squares) {
-  for (let i = 0; i < squares.length; i++) {
-    if (squares[i] == null) return 0;
-  }
-  return 1;
-}
-function empty(squares) {
-  for (let i = 0; i < squares.length; i++) {
-    if (squares[i] != null) return 0;
-  }
-  return 1;
-}
-function calculateWinner(squares) {
-  const castigator = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
-  ];
-  for (let i = 0; i < castigator.length; i++) {
-    const [a, b, c] = castigator[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
 }
