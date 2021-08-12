@@ -33,15 +33,15 @@ class Board extends React.Component {
     this.socket = this.props.socket;
     this.state = {
       squares: Array(9).fill(null),
-      WhoAmI: null
+      WhoAmI: null,
+      winnerpage: false,
+      winner: null
     };
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidMountTable = this.componentDidMountTable.bind(this);
     //dam emit la link ul de la server
     this.socket.emit('user', window.location.search.substring(1));
     //si se trimite la link ul de la server cine esti(doar o data)
-    this.socket.on('table', function(tabla) {
-      this.setState({ squares: tabla });
-    });
   }
   componentDidMount(nr) {
     if (nr == true) {
@@ -50,17 +50,24 @@ class Board extends React.Component {
       this.setState({ WhoAmI: 'O' });
     }
   }
+  componentDidMountTable(tabla) {
+    this.setState({ squares: tabla });
+  }
   handleClick(i) {
     const squares = this.state.squares.slice();
     if (this.MutEu(squares) == 0) {
       return;
     }
-    squares[i] = this.state.WhoAmI;
+    if (squares[i] == null) {
+      squares[i] = this.state.WhoAmI;
+    } else {
+      return;
+    }
     this.setState({
       //pui in patratel cine esti
       squares: squares
     });
-    //se da emit la tabla cu x si 0
+    this.socket.emit('table', squares);
   }
   MutEu(squares) {
     var spatii_ocupate = 0;
@@ -91,10 +98,24 @@ class Board extends React.Component {
   }
 
   render() {
+    //si se trimite la link ul de la server cine esti(doar o data)
     this.socket.on(
       'user',
       function(nr) {
         this.componentDidMount(nr);
+      }.bind(this)
+    );
+    this.socket.on(
+      'table',
+      function(tabla) {
+        this.componentDidMountTable(tabla);
+      }.bind(this)
+    );
+    this.socket.on(
+      'winner',
+      function(car) {
+        this.setState({ winnerpage: true });
+        this.setState({ winner: car });
       }.bind(this)
     );
     return (
@@ -115,6 +136,7 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
+        {this.state.winnerpage && <h1> Winner is {this.state.winner}</h1>}
       </div>
     );
   }
