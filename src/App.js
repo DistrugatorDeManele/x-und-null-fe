@@ -35,10 +35,13 @@ class Board extends React.Component {
       squares: Array(9).fill(null),
       WhoAmI: null,
       winnerpage: false,
+      drawpage: false,
+      restart: false,
       winner: null
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentDidMountTable = this.componentDidMountTable.bind(this);
+    this.emptythesquare = this.emptythesquare.bind(this);
     //dam emit la link ul de la server
     this.socket.emit('user', window.location.search.substring(1));
     //si se trimite la link ul de la server cine esti(doar o data)
@@ -68,6 +71,12 @@ class Board extends React.Component {
       squares: squares
     });
     this.socket.emit('table', squares);
+  }
+  emptythesquare() {
+    const squares = Array(9).fill(null);
+    this.setState({
+      squares: squares
+    });
   }
   MutEu(squares) {
     var spatii_ocupate = 0;
@@ -116,6 +125,14 @@ class Board extends React.Component {
       function(car) {
         this.setState({ winnerpage: true });
         this.setState({ winner: car });
+        this.setState({ restart: true });
+      }.bind(this)
+    );
+    this.socket.on(
+      'draw',
+      function(nimic) {
+        this.setState({ drawpage: true });
+        this.setState({ restart: true });
       }.bind(this)
     );
     return (
@@ -136,7 +153,11 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
+        {this.state.drawpage && <h1> It's a DRAW </h1>}
         {this.state.winnerpage && <h1> Winner is {this.state.winner}</h1>}
+        {this.state.restart && (
+          <button onClick={this.emptythesquare}>Restart</button>
+        )}
       </div>
     );
   }
