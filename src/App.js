@@ -56,26 +56,33 @@ class Board extends React.Component {
   componentDidMountTable(tabla) {
     this.setState({ squares: tabla });
   }
+  squaresempty(squares) {}
   handleClick(i) {
-    const squares = this.state.squares.slice();
-    if (this.MutEu(squares) == 0) {
-      return;
+    if (this.state.winnerpage == false && this.state.drawpage == false) {
+      const squares = this.state.squares.slice();
+      if (this.MutEu(squares) == 0) {
+        return;
+      }
+      if (squares[i] == null) {
+        squares[i] = this.state.WhoAmI;
+      } else {
+        return;
+      }
+      this.setState({
+        //pui in patratel cine esti
+        squares: squares
+      });
+      this.socket.emit('table', squares);
     }
-    if (squares[i] == null) {
-      squares[i] = this.state.WhoAmI;
-    } else {
-      return;
-    }
-    this.setState({
-      //pui in patratel cine esti
-      squares: squares
-    });
-    this.socket.emit('table', squares);
   }
   emptythesquare() {
     const squares = Array(9).fill(null);
     this.setState({
-      squares: squares
+      squares: squares,
+      winnerpage: false,
+      drawpage: false,
+      restart: false,
+      winner: null
     });
   }
   MutEu(squares) {
