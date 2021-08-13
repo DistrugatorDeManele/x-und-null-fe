@@ -52,10 +52,12 @@ export default class Homepage extends React.Component {
           }}
           onClick={this.sendToServer}
         >
-          <AwesomeButton type="primary" id="b1">Enter Session</AwesomeButton>
+          <AwesomeButton type="primary" id="b1">
+            Enter Session
+          </AwesomeButton>
         </Link>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <form>
           <label>
             Your invite link
@@ -75,7 +77,9 @@ export default class Homepage extends React.Component {
             }}
             onClick={this.sendToServer}
           >
-            <AwesomeButton type = "primary" id = "b2">Enter Session</AwesomeButton>
+            <AwesomeButton type="primary" id="b2">
+              Enter Session
+            </AwesomeButton>
           </Link>
         </form>
       </div>
