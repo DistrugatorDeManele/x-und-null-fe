@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
-
+import { AwesomeButton } from 'react-awesome-button';
+import 'react-awesome-button/dist/styles.css';
+import './stylehp.css';
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,10 @@ export default class Homepage extends React.Component {
     return (
       <div>
         <p> {this.state.link} </p>
-        <button onClick={this.genereaza}>Change Invite Link</button>
+        <AwesomeButton onPress={this.genereaza} size="medium">
+          Change invite link
+        </AwesomeButton>
+        <br />
         <br />
         <Link
           to={{
@@ -47,8 +52,10 @@ export default class Homepage extends React.Component {
           }}
           onClick={this.sendToServer}
         >
-          Enter Session
+          <AwesomeButton type="primary" id="b1">Enter Session</AwesomeButton>
         </Link>
+        <br/>
+        <br/>
         <form>
           <label>
             Your invite link
@@ -68,7 +75,7 @@ export default class Homepage extends React.Component {
             }}
             onClick={this.sendToServer}
           >
-            Enter Session
+            <AwesomeButton type = "primary" id = "b2">Enter Session</AwesomeButton>
           </Link>
         </form>
       </div>

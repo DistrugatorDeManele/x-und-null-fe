@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css';
+import './stylegame.css';
 import ReactDOM from 'react-dom';
 export default class App extends React.Component {
   constructor(props) {
