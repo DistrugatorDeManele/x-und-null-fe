@@ -2,19 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { Helmet } from 'react-helmet';
-const io = require('socket.io-client');
-const socket = io('http://localhost:3000/');
+import { AwesomeButton } from 'react-awesome-button';
+import 'react-awesome-button/dist/styles.css';
+import './stylehp.css';
 export default class Homepage extends React.Component {
   constructor(props) {
     super(props);
+    this.socket = this.props.socket;
     this.state = {
-      link: ''
+      link: this.genereaza(),
+      join: ''
     };
     this.genereaza = this.genereaza.bind(this);
-    this.Link = this.Link.bind(this);
-  }
-  Link(link) {
-    this.setState({ link: link });
+    this.handleChange = this.handleChange.bind(this);
+    this.sendToServer = this.sendToServer.bind(this);
   }
   genereaza() {
     var link1 = '';
@@ -25,23 +26,62 @@ export default class Homepage extends React.Component {
       link1 += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     this.setState({ link: link1 });
-    socket.emit('chat message', link1);
+    //this.socket.emit('invite', window.location.search.substring(1));
+    return link1;
+  }
+  handleChange(event) {
+    this.setState({ join: event.target.value });
+  }
+  sendToServer() {
+    this.socket.emit('invite', window.location.search.substring(1));
   }
   render() {
     return (
       <div>
         <p> {this.state.link} </p>
-        <button onClick={this.genereaza}>Change Invite Link</button>
+        <AwesomeButton onPress={this.genereaza} size="medium">
+          Change invite link
+        </AwesomeButton>
+        <br />
         <br />
         <Link
           to={{
-            pathname: '/game',
+            pathname: '/loading',
             search: this.state.link,
             state: { fromDashboard: true }
           }}
+          onClick={this.sendToServer}
         >
-          Enter Session
+          <AwesomeButton type="primary" id="b1">
+            Enter Session
+          </AwesomeButton>
         </Link>
+        <br />
+        <br />
+        <form>
+          <label>
+            Your invite link
+            <br />
+            <input
+              type="text"
+              name="name"
+              value={this.state.join}
+              onChange={this.handleChange}
+            />
+          </label>
+          <Link
+            to={{
+              pathname: '/loading',
+              search: this.state.join,
+              state: { fromDashboard: true }
+            }}
+            onClick={this.sendToServer}
+          >
+            <AwesomeButton type="primary" id="b2">
+              Enter Session
+            </AwesomeButton>
+          </Link>
+        </form>
       </div>
     );
   }
